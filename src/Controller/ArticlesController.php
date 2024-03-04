@@ -21,10 +21,13 @@ class ArticlesController extends AbstractController
         ]);
     }
     #[Route('/articles/{id}', name: 'app_get_article_by_id')]
-    public function getArticleById(): Response
+    public function getArticleById(EntityManagerInterface $entityManager,
+        int $id): Response
     {
+        $article = $entityManager->getRepository(Article::class)->find($id);
+        // dd($article);
         return $this->render('articles/show_artcile.html.twig', [
-            'controller_name' => 'ArticlesController',
+            'article' => $article,
         ]);
     }
 }
