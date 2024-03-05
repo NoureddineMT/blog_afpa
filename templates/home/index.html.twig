@@ -1,19 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-    
-    {{ fabrice }}:
-    <ul>
-        <li> <a href="{{ path('app_contact') }}" >Contact</a> </li>
+    <ul class="list-group">
+        {% for category in categories %}
+            <li>
+                <a href="{{path('app_get_article_by_category', {id_category : category.id})}}" class="list-group-item">{{category.title}}</a>
+            </li>
+
+        {% endfor %}
     </ul>
-</div>
+
+
+    {# interpollation: affichage de la variable dans la page #}
+    {{fabrice}}
+    <ul>
+        <li>
+            {# redirection avec la fonction path de twig #}
+            <a href=" {{ path('app_home')}}">Home
+            </a>
+
+        </li>
+        <li>
+            <a href=" {{ path('app_contact')}}">Contact
+
+            </a>
+        </li>
+        <li>
+            <a href=" {{ path('app_articles')}}">Liste des articles
+
+            </a>
+
+        </li>
+
+
+    </ul>
 {% endblock %}

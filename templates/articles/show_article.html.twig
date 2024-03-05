@@ -10,8 +10,16 @@
 
 <div class="container">
     <div class="card" style="width: 18rem;">
+    {% if article.picture == NULL %}
+    <img src="{{ asset('build/images/default-img.jpeg' )}}">
+    {% else %}
+    <img src="{{ asset('build/images/' ~ article.picture )}}">    
+    {% endif %}
+    
+    
         <div class="card-body">
             <h5 class="card-title">{{ article.title }}</h5>
+            <h6 class="card-title"> {{ article.date|date("d-m-Y")}} </h6>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
