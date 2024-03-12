@@ -4,38 +4,33 @@
 {% endblock %}
 
 {% block body %}
+	<div class="row p-5">
+		<div class="col-4 border">
+			<ul class=" list-group">
+				{% for category in categories %}
+					<li>
+						<a href="{{path('app_get_article_by_category', {id_category : category.id})}}" class="list-group-item">{{category.title}}</a>
+					</li>
 
-    <ul class="list-group">
-        {% for category in categories %}
-            <li>
-                <a href="{{path('app_get_article_by_category', {id_category : category.id})}}" class="list-group-item">{{category.title}}</a>
-            </li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="row col-8 border justify-content-between">
 
-        {% endfor %}
-    </ul>
+			{% for article in articles %}
+				<div class="card col-4 mb-3" style="width: 23rem;">
+					{% if article.picture is empty %}
+						<img class="card-img-top" src="{{ asset('/build/images/default.jpg') }}" alt="{{article.title}}" title="{{article.title}}">
+					{% else %}
+						<img class="card-img-top" src="{{ asset('/build/images/' ~ article.picture) }}" alt="{{article.title}}" title="{{article.title}}">
+					{% endif %}
+					<div class="card-body">
+						<h5 class="card-title">{{article.title}}</h5>
+						<p class="card-text">{{article.description}}</p>
+						<a href="{{ path('app_article_show', {id : article.id })}}" class="btn btn-success ">Go to the article</a>
+					</div>
+				</div>
 
-
-    {# interpollation: affichage de la variable dans la page #}
-    {{fabrice}}
-    <ul>
-        <li>
-            {# redirection avec la fonction path de twig #}
-            <a href=" {{ path('app_home')}}">Home
-            </a>
-
-        </li>
-        <li>
-            <a href=" {{ path('app_contact')}}">Contact
-
-            </a>
-        </li>
-        <li>
-            <a href=" {{ path('app_articles')}}">Liste des articles
-
-            </a>
-
-        </li>
-
-
-    </ul>
-{% endblock %}
+			{% endfor %}
+		</div>
+	{% endblock %}

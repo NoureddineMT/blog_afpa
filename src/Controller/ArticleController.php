@@ -32,6 +32,10 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($article);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Votre article a bien été ajoute'
+            );
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -77,5 +81,15 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/category/{id_category}', name: 'app_get_article_by_category', methods: ['GET'])]
+    public function getArticleByCategory(EntityManagerInterface $entityManager, int $id_category): Response
+    {
+
+        $articles = $entityManager->getRepository(Article::class)->findBy(array("category" => $id_category));
+
+        return $this->render('article/index.html.twig', [
+            'articles' => $articles,
+        ]);
     }
 }

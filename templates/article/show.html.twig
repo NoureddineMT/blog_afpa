@@ -1,38 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article{% endblock %}
+{% block title %}Article
+{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
+	<h1>Article</h1>
+	<div class="col-md-10 mx-auto">
+		<h1>{{ article.title }}</h1>
+		<img src="{{ asset('build/images/' ~ article.picture) }}" alt="{{ article.title }}">
+		<p>{{ article.description }}</p>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ article.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ article.description }}</td>
-            </tr>
-            <tr>
-                <th>Picture</th>
-                <td>{{ article.picture }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+	</div>
 
-    <a href="{{ path('app_article_index') }}">back to list</a>
+	<a class="btn btn-success" href="{{ path('app_article_index') }}">back to list</a>
 
-    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
 
-    {{ include('article/_delete_form.html.twig') }}
+	{{ include('article/_delete_form.html.twig') }}
+
+	{% if app.user and 'ROLE_ADMIN' in app.user.getroles()  %}
+		<a class="btn btn-warning" href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+	{% endif %}
+
 {% endblock %}
