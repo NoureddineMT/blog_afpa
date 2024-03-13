@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -82,22 +83,35 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Entrez un Mot de Passe',
+                        ]),
+                        new Length([
+                            'min' => 6,
+                            'minMessage' => 'Votre Mot de Passe doit faire au moins {{ limit }} caractères',
+                            // max length allowed by Symfony for security reasons
+                            'max' => 4096,
+                        ]),
+                    ],
+                    'label' => 'Nouveau Mot de Passe',
+                    'row_attr' => [
+                        'class' => 'col-12'
+                    ]
+                ],
+                'second_options' => [
+                    'label' => 'Répétez le nouveau mot de passe',
+                    'row_attr' => [
+                        'class' => 'col-12'
+                    ]
+                ],
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
+                // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password', 'placeholder' => 'Votre code postal'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez renseigner un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
             ])
         ;
     }
